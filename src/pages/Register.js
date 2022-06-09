@@ -1,8 +1,10 @@
 import React from 'react'
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
 const Register = () => {
   const genres = ["r&b", "hip-hop", "jazz", "pop", "disco", "funk", "soul", "classical"]
+
+  const [selectedGenres, setSelectedGenres] = React.useState([])
 
   return (
     <div className="flex min-h-screen items-center bg-gray-50">
@@ -48,7 +50,7 @@ const Register = () => {
             <div className="my-2 flex flex-wrap gap-x-4">
               {genres.map((genre, key) => {
                 return (
-                  <div key={key} className="bg-yellow-200 px-1 mt-2 rounded text-yellow-700 hover:bg-yellow-600 cursor-pointer">
+                  <div key={key} className="bg-yellow-200 px-1 mt-2 rounded text-yellow-700 hover:bg-yellow-600 cursor-pointer" onClick={() => setSelectedGenres([...selectedGenres, key])}>
                     {genre}
                   </div>
                 )
