@@ -1,10 +1,37 @@
 import React from 'react'
 import { Link } from "react-router-dom"
+import UserPool from '../UserPool'
+import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 
 const Register = () => {
   const genres = ["r&b", "hip-hop", "jazz", "pop", "disco", "funk", "soul", "classical"]
 
   const [selectedGenres, setSelectedGenres] = React.useState([])
+  const [email, setEmail] = React.useState("")
+  const [number, setNumber] = React.useState("")
+  const [password, setPassword] = React.useState("")
+  const [confirmPassword, setConfirmPassword] = React.useState("")
+
+  const onSubmit = (e) => {
+    if (password === confirmPassword) {
+      const attributeList = [];
+      const dataPhoneNumber = {
+        Name: 'phone_number',
+        Value: number
+      };
+      const attributePhoneNumber = new CognitoUserAttribute(dataPhoneNumber);
+      attributeList.push(attributePhoneNumber);
+      // TODO: validate the phone number
+      e.preventDefault();
+      UserPool.signUp(email, password, attributeList, null, (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+        // TODO: link dynamoDB and upload the user's genre's and info
+        console.log(data)
+      })
+    }
+  }
 
   return (
     <div className="flex min-h-screen items-center bg-gray-50">
@@ -24,6 +51,17 @@ const Register = () => {
                 className="w-full px-4 py-3 mt-3 bg-gray-100"
                 required
                 placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="my-2">
+              <label className="text-gray-800">Phone Number</label>
+              <input
+                name="phone"
+                className="w-full px-4 py-3 mt-3 bg-gray-100"
+                required
+                placeholder="Phone Number"
+                onChange={(e) => setNumber(e.target.value)}
               />
             </div>
             <div className="my-2">
@@ -34,6 +72,7 @@ const Register = () => {
                 className="w-full px-4 py-3 mt-3 mb-2 bg-gray-100"
                 required
                 placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="my-2">
@@ -44,6 +83,7 @@ const Register = () => {
                 className="w-full px-4 py-3 mt-3 mb-2 bg-gray-100"
                 required
                 placeholder="Confirm Password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
             <label className="text-gray-800">Select genres</label>
@@ -58,7 +98,7 @@ const Register = () => {
             </div>
             <div className="my-3">
               <Link to="/">
-                <button className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700">
+                <button className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700" onClick={onSubmit}>
                   Register
                 </button>
               </Link>
