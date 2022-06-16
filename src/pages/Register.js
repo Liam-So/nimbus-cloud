@@ -12,7 +12,14 @@ const Register = () => {
   const [password, setPassword] = React.useState("")
   const [confirmPassword, setConfirmPassword] = React.useState("")
 
+  React.useEffect(() => {
+    // console.log("changed!")
+    console.log(selectedGenres)
+  }, [selectedGenres])
+
+
   const onSubmit = (e) => {
+    // TODO: validate the phone number
     if (password === confirmPassword) {
       const attributeList = [];
       const dataPhoneNumber = {
@@ -21,7 +28,7 @@ const Register = () => {
       };
       const attributePhoneNumber = new CognitoUserAttribute(dataPhoneNumber);
       attributeList.push(attributePhoneNumber);
-      // TODO: validate the phone number
+
       e.preventDefault();
       UserPool.signUp(email, password, attributeList, null, (err, data) => {
         if (err) {
@@ -90,7 +97,10 @@ const Register = () => {
             <div className="my-2 flex flex-wrap gap-x-4">
               {genres.map((genre, key) => {
                 return (
-                  <div key={key} className="bg-yellow-200 px-1 mt-2 rounded text-yellow-700 hover:bg-yellow-600 cursor-pointer" onClick={() => setSelectedGenres([...selectedGenres, key])}>
+                  <div key={key} className="bg-yellow-200 px-1 mt-2 rounded text-yellow-700 hover:bg-yellow-500 cursor-pointer" onClick={() => {
+                    setSelectedGenres([...selectedGenres, genre])
+                    console.log(selectedGenres)
+                  }}>
                     {genre}
                   </div>
                 )

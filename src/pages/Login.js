@@ -1,7 +1,39 @@
 import React from 'react'
-import { Link } from "react-router-dom";
+import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js"
+import { Link } from "react-router-dom"
+import UserPool from '../UserPool'
 
 const Login = () => {
+  const [email, setEmail] = React.useState("")
+  const [password, setPassword] = React.useState("")
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+
+    const user = new CognitoUser({
+      Username: email,
+      Pool: UserPool
+    })
+
+    const authDetails = new AuthenticationDetails({
+      Username: email,
+      Password: password
+    })
+
+    user.authenticateUser(authDetails, {
+      onSuccess: (data) => {
+        console.log("onSuccess:", data)
+      },
+      onFailure: (err) => {
+        console.error("onFailure:", err)
+      },
+      newPasswordRequired: (data) => {
+        console.log("newPasswordRequired:", data)
+      }
+    })
+
+  }
+
   return (
     <div className="flex min-h-screen items-center bg-gray-50">
       <div className="bg-white lg:w-4/12 md:6/12 w-10/12 m-auto shadow-md">
@@ -20,6 +52,7 @@ const Login = () => {
                 className="w-full px-4 py-3 mt-3 bg-gray-100"
                 required
                 placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="my-2">
@@ -30,11 +63,12 @@ const Login = () => {
                 className="w-full px-4 py-3 mt-3 mb-2 bg-gray-100"
                 required
                 placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
               />
               <label className="text-gray-800">Don't have an account? Register <Link to="/register" className='font-bold hover:text-green-500'>here</Link></label>
               <div className="my-3">
                 <Link to="/home">
-                  <button className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700">
+                  <button className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700" onClick={onSubmit}>
                     Login
                   </button>
                 </Link>
