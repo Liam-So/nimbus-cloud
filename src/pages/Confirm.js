@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import UserPool from '../UserPool'
 
 const Confirm = () => {
+  // grab our state from register
   const { state } = useLocation()
   const nav = useNavigate()
 
@@ -25,6 +26,8 @@ const Confirm = () => {
         console.log(result)
         nav("/")
       })
+    } else {
+      alert("Your account cannot be verified right now. Please try again.")
     }
   }
 

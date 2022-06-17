@@ -32,6 +32,7 @@ const Register = () => {
         } else {
           // TODO: link dynamoDB and upload the user's genre's and info
           console.log(data)
+          // send our username to the confirm page
           nav("/confirm", { state: { username: email } })
         }
       })
