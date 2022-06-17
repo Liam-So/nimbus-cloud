@@ -4,29 +4,28 @@ import { useLocation, useNavigate } from "react-router-dom"
 import UserPool from '../UserPool'
 
 const Confirm = () => {
-
   const { state } = useLocation()
-
   const nav = useNavigate()
-  const { username } = state
 
   const [code, setCode] = React.useState(null)
 
   const onSubmit = () => {
-    console.log(code)
-    const userData = {
-      Username: username,
-      Pool: UserPool
-    }
-
-    const cognitoUser = new CognitoUser(userData)
-    cognitoUser.confirmRegistration(code, true, (err, result) => {
-      if (err) {
-        console.error(err)
+    if (state) {
+      const { username } = state
+      const userData = {
+        Username: username,
+        Pool: UserPool
       }
-      console.log(result)
-      nav("/")
-    })
+
+      const cognitoUser = new CognitoUser(userData)
+      cognitoUser.confirmRegistration(code, true, (err, result) => {
+        if (err) {
+          console.error(err)
+        }
+        console.log(result)
+        nav("/")
+      })
+    }
   }
 
   return (
