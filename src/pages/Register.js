@@ -1,7 +1,7 @@
 import React from 'react'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import UserPool from '../UserPool'
-import { CognitoUserAttribute } from "amazon-cognito-identity-js";
+import { CognitoUserAttribute } from "amazon-cognito-identity-js"
 
 const Register = () => {
   const genres = ["r&b", "hip-hop", "jazz", "pop", "disco", "funk", "soul", "classical"]
@@ -12,11 +12,7 @@ const Register = () => {
   const [password, setPassword] = React.useState("")
   const [confirmPassword, setConfirmPassword] = React.useState("")
 
-  React.useEffect(() => {
-    // console.log("changed!")
-    console.log(selectedGenres)
-  }, [selectedGenres])
-
+  const nav = useNavigate();
 
   const onSubmit = (e) => {
     // TODO: validate the phone number
@@ -33,9 +29,11 @@ const Register = () => {
       UserPool.signUp(email, password, attributeList, null, (err, data) => {
         if (err) {
           console.error(err)
+        } else {
+          // TODO: link dynamoDB and upload the user's genre's and info
+          console.log(data)
+          nav("/confirm", { state: { username: email } })
         }
-        // TODO: link dynamoDB and upload the user's genre's and info
-        console.log(data)
       })
     }
   }
