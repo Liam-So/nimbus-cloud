@@ -50,11 +50,9 @@ const Login = () => {
               />
               <label className="text-gray-800">Don't have an account? Register <Link to="/register" className='font-bold hover:text-green-500'>here</Link></label>
               <div className="my-3">
-                <Link to="/home">
-                  <button className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700" onClick={onSubmit}>
-                    Login
-                  </button>
-                </Link>
+                <button className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700" onClick={onSubmit}>
+                  Login
+                </button>
               </div>
             </div>
           </div>
