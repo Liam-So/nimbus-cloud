@@ -22,9 +22,10 @@ const Confirm = () => {
       cognitoUser.confirmRegistration(code, true, (err, result) => {
         if (err) {
           console.error(err)
+        } else {
+          console.log(result)
+          nav("/")
         }
-        console.log(result)
-        nav("/")
       })
     } else {
       alert("Your account cannot be verified right now. Please try again.")

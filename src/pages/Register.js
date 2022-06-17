@@ -106,11 +106,9 @@ const Register = () => {
               })}
             </div>
             <div className="my-3">
-              <Link to="/">
-                <button className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700" onClick={onSubmit}>
-                  Register
-                </button>
-              </Link>
+              <button className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700" onClick={onSubmit}>
+                Register
+              </button>
             </div>
           </div>
         </div>

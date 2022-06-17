@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 const AccountContext = React.createContext()
 
-const Account = (props) => {
+const Account = ({ children }) => {
   const nav = useNavigate();
 
   const getSession = async () => {
@@ -65,7 +65,7 @@ const Account = (props) => {
 
   return (
     <AccountContext.Provider value={{ authenticate, getSession, logout }}>
-      {props.children}
+      {children}
     </AccountContext.Provider>
   )
 }
