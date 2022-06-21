@@ -8,44 +8,46 @@ import { isValidPhoneNumber } from 'react-phone-number-input'
 
 
 const Register = () => {
-  const genres = ["r&b", "hip-hop", "jazz", "pop", "disco", "funk", "soul", "classical"]
-  const [selectedGenres, setSelectedGenres] = React.useState([])
-  const [email, setEmail] = React.useState("")
-  const [number, setNumber] = React.useState()
-  const [password, setPassword] = React.useState("")
-  const [confirmPassword, setConfirmPassword] = React.useState("")
+    const genres = ["r&b", "hip-hop", "jazz", "pop", "disco", "funk", "soul", "classical"]
+    const [selectedGenres, setSelectedGenres] = React.useState([])
+    const [email, setEmail] = React.useState("")
+    const [number, setNumber] = React.useState()
+    const [password, setPassword] = React.useState("")
+    const [confirmPassword, setConfirmPassword] = React.useState("")
 
     const nav = useNavigate();
 
     const onSubmit = (e) => {
-      console.log(number)
-      if (!isValidPhoneNumber(number)) {
-          alert("Invalid Phone Number")
-      }
-      else {
-          if (password === confirmPassword) {
-              const attributeList = [];
-              const dataPhoneNumber = {
-                  Name: 'phone_number',
-                  Value: number
-              };
-              const attributePhoneNumber = new CognitoUserAttribute(dataPhoneNumber);
-              attributeList.push(attributePhoneNumber);
+        if (!isValidPhoneNumber(number)) {
+            alert("Invalid Phone Number")
+        }
 
-              e.preventDefault();
-              UserPool.signUp(email, password, attributeList, null, (err, data) => {
-                  if (err) {
-                      console.error(err)
-                  } else {
-                      // TODO: link dynamoDB and upload the user's genre's and info
-                      console.log(data)
-                      // send our username to the confirm page
-                      nav("/confirm", { state: { username: email } })
-                  }
-              })
-          }
-      }
-  }
+        else if (password != confirmPassword) {
+            alert("Passwords not match")
+        }
+        else {
+            const attributeList = [];
+            const dataPhoneNumber = {
+                Name: 'phone_number',
+                Value: number
+            };
+            const attributePhoneNumber = new CognitoUserAttribute(dataPhoneNumber);
+            attributeList.push(attributePhoneNumber);
+
+            e.preventDefault();
+            UserPool.signUp(email, password, attributeList, null, (err, data) => {
+                if (err) {
+                    console.error(err)
+                }
+                else {
+                    // TODO: link dynamoDB and upload the user's genre's and info
+                    console.log(data)
+                    // send our username to the confirm page
+                    nav("/confirm", { state: { username: email } })
+                }
+            })
+        }
+    }
 
   return (
       <div className="flex min-h-screen items-center bg-gray-50">
