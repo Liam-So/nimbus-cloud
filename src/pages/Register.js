@@ -23,7 +23,7 @@ const Register = () => {
         }
 
         else if (password != confirmPassword) {
-            alert("Passwords not match")
+            alert("Passwords do not match")
         }
         else {
             const attributeList = [];
