@@ -6,16 +6,17 @@ import Home from './pages/Home';
 import { Account } from './context/Account';
 import Confirm from './pages/Confirm';
 
+
 function App() {
   return (
     <BrowserRouter>
-      {/* Wrap our Routes with our Account Provider */}
+      {/* Wrap our Routes with our Account Provider */} 
       <Account>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/confirm" element={<Confirm />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/home" element={<Home />} /> 
           <Route
             path="*"
             element={
