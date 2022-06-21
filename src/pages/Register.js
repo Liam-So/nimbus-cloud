@@ -4,7 +4,7 @@ import UserPool from '../UserPool'
 import { CognitoUserAttribute } from "amazon-cognito-identity-js"
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
-
+import { isValidPhoneNumber } from 'react-phone-number-input'
 
 
 const Register = () => {
@@ -17,29 +17,34 @@ const Register = () => {
 
     const nav = useNavigate();
 
-  const onSubmit = (e) => {
-    // TODO: validate the phone number
-    if (password === confirmPassword) {
-      const attributeList = [];
-      const dataPhoneNumber = {
-        Name: 'phone_number',
-        Value: number
-      };
-      const attributePhoneNumber = new CognitoUserAttribute(dataPhoneNumber);
-      attributeList.push(attributePhoneNumber);
+    const onSubmit = (e) => {
+      console.log(number)
+      if (!isValidPhoneNumber(number)) {
+          alert("Invalid Phone Number")
+      }
+      else {
+          if (password === confirmPassword) {
+              const attributeList = [];
+              const dataPhoneNumber = {
+                  Name: 'phone_number',
+                  Value: number
+              };
+              const attributePhoneNumber = new CognitoUserAttribute(dataPhoneNumber);
+              attributeList.push(attributePhoneNumber);
 
-      e.preventDefault();
-      UserPool.signUp(email, password, attributeList, null, (err, data) => {
-        if (err) {
-          console.error(err)
-        } else {
-          // TODO: link dynamoDB and upload the user's genre's and info
-          console.log(data)
-          // send our username to the confirm page
-          nav("/confirm", { state: { username: email } })
-        }
-      })
-    }
+              e.preventDefault();
+              UserPool.signUp(email, password, attributeList, null, (err, data) => {
+                  if (err) {
+                      console.error(err)
+                  } else {
+                      // TODO: link dynamoDB and upload the user's genre's and info
+                      console.log(data)
+                      // send our username to the confirm page
+                      nav("/confirm", { state: { username: email } })
+                  }
+              })
+          }
+      }
   }
 
   return (
