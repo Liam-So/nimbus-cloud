@@ -1,10 +1,9 @@
 import React from 'react'
-import { Link, useNavigate } from "react-router-dom"
+import {useNavigate } from "react-router-dom"
 import UserPool from '../UserPool'
 import { CognitoUserAttribute } from "amazon-cognito-identity-js"
 import 'react-phone-number-input/style.css'
-import PhoneInput from 'react-phone-number-input'
-import { isValidPhoneNumber } from 'react-phone-number-input'
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
 
 
 const Register = () => {
@@ -22,7 +21,7 @@ const Register = () => {
             alert("Invalid Phone Number")
         }
 
-        else if (password != confirmPassword) {
+        else if (password !== confirmPassword) {
             alert("Passwords do not match")
         }
         else {
