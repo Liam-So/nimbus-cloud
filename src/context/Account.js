@@ -8,24 +8,6 @@ const AccountContext = React.createContext();
 const Account = ({ children }) => {
   const nav = useNavigate();
 
-  const getSession = async () => {
-    return await new Promise((resolve, reject) => {
-      const user = Pool.getCurrentUser();
-      if (user) {
-        user.getSession((err, session) => {
-          if (err) {
-            reject();
-          } else {
-            resolve(session);
-            console.log(session);
-          }
-        });
-      } else {
-        reject();
-      }
-    });
-  };
-
   const authenticate = async (Username, Password) => {
     return await new Promise((resolve, reject) => {
       const user = new CognitoUser({
@@ -64,19 +46,8 @@ const Account = ({ children }) => {
     }
   };
 
-  const isLoggedIn = () => {
-    const user = Pool.getCurrentUser();
-    console.log(user);
-    if (user !== undefined) {
-      return true;
-    }
-    return false;
-  };
-
   return (
-    <AccountContext.Provider
-      value={{ authenticate, getSession, logout, isLoggedIn }}
-    >
+    <AccountContext.Provider value={{ authenticate, logout }}>
       {children}
     </AccountContext.Provider>
   );
