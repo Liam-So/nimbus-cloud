@@ -1,48 +1,57 @@
 import React from 'react'
-import { Link, useNavigate } from "react-router-dom"
+import {useNavigate } from "react-router-dom"
 import UserPool from '../UserPool'
 import { CognitoUserAttribute } from "amazon-cognito-identity-js"
+import 'react-phone-number-input/style.css'
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
+
 
 const Register = () => {
-  const genres = ["r&b", "hip-hop", "jazz", "pop", "disco", "funk", "soul", "classical"]
+    const genres = ["r&b", "hip-hop", "jazz", "pop", "disco", "funk", "soul", "classical"]
+    const [selectedGenres, setSelectedGenres] = React.useState([])
+    const [email, setEmail] = React.useState("")
+    const [number, setNumber] = React.useState()
+    const [password, setPassword] = React.useState("")
+    const [confirmPassword, setConfirmPassword] = React.useState("")
 
-  const [selectedGenres, setSelectedGenres] = React.useState([])
-  const [email, setEmail] = React.useState("")
-  const [number, setNumber] = React.useState("")
-  const [password, setPassword] = React.useState("")
-  const [confirmPassword, setConfirmPassword] = React.useState("")
+    const nav = useNavigate();
 
-  const nav = useNavigate();
-
-  const onSubmit = (e) => {
-    // TODO: validate the phone number
-    if (password === confirmPassword) {
-      const attributeList = [];
-      const dataPhoneNumber = {
-        Name: 'phone_number',
-        Value: number
-      };
-      const attributePhoneNumber = new CognitoUserAttribute(dataPhoneNumber);
-      attributeList.push(attributePhoneNumber);
-
-      e.preventDefault();
-      UserPool.signUp(email, password, attributeList, null, (err, data) => {
-        if (err) {
-          console.error(err)
-        } else {
-          // TODO: link dynamoDB and upload the user's genre's and info
-          console.log(data)
-          // send our username to the confirm page
-          nav("/confirm", { state: { username: email } })
+    const onSubmit = (e) => {
+        if (!isValidPhoneNumber(number)) {
+            alert("Invalid Phone Number")
         }
-      })
+
+        else if (password !== confirmPassword) {
+            alert("Passwords do not match")
+        }
+        else {
+            const attributeList = [];
+            const dataPhoneNumber = {
+                Name: 'phone_number',
+                Value: number
+            };
+            const attributePhoneNumber = new CognitoUserAttribute(dataPhoneNumber);
+            attributeList.push(attributePhoneNumber);
+
+            e.preventDefault();
+            UserPool.signUp(email, password, attributeList, null, (err, data) => {
+                if (err) {
+                    console.error(err)
+                }
+                else {
+                    // TODO: link dynamoDB and upload the user's genre's and info
+                    console.log(data)
+                    // send our username to the confirm page
+                    nav("/confirm", { state: { username: email } })
+                }
+            })
+        }
     }
-  }
 
   return (
-    <div className="flex min-h-screen items-center bg-gray-50">
-      <div className="bg-white lg:w-4/12 md:6/12 w-10/12 m-auto shadow-md">
-        <div className="py-8 px-8 rounded-xl">
+      <div className="flex min-h-screen items-center bg-gray-50">
+        <div className="bg-white lg:w-4/12 md:6/12 w-10/12 m-auto shadow-md">
+          <div className="py-8 px-8 rounded-xl">
           <h2 className="text-2xl font-semibold text-gray-900 text-center">
             Register
           </h2>
@@ -61,14 +70,16 @@ const Register = () => {
               />
             </div>
             <div className="my-2">
-              <label className="text-gray-800">Phone Number</label>
-              <input
-                name="phone"
-                className="w-full px-4 py-3 mt-3 bg-gray-100"
-                required
-                placeholder="Phone Number"
-                onChange={(e) => setNumber(e.target.value)}
-              />
+            <label className="text-gray-800">Phone Number</label>
+                  <PhoneInput
+                     name="phone"
+                     defaultCountry={'CA'}
+                     className="w-full px-4 py-3 mt-3 bg-gray-100"
+                     required
+                     placeholder="Phone Number"
+                     number={number}
+                     onChange={setNumber}
+             />
             </div>
             <div className="my-2">
               <label className="text-gray-800">Password</label>
