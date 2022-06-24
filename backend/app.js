@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
   res.send('Nimbus CSCI 4145 Project')
 })
 
-// Get a specific user from dynamoDB
+// Get a specific user
 app.get('/users', (req, res) => {
   if (req.body?.id) {
     const params = {
@@ -22,9 +22,9 @@ app.get('/users', (req, res) => {
         'id': { S: req.body.id }
       },
     }
-    ddb.getItem(params, function (err, user) {
+    ddb.getItem(params, (err, user) => {
       if (err) {
-        console.log("Error", err);
+        console.log("Error", err)
       } else {
         if (user.Item) {
           res.status(200).send(user.Item)
@@ -35,6 +35,38 @@ app.get('/users', (req, res) => {
     });
   } else {
     res.status(400).send({ "error": "Error in request body. Please ensure you have the id attribute." })
+  }
+})
+
+// Post a new user
+app.post('/users', (req, res) => {
+  const id = req.body?.id
+  const genres = req.body?.genres
+
+  // genres have to be validated on frontend
+  if (id && genres) {
+    // add data type for each genre
+    const genreParams = genres.map(genre => ({ "S": genre }))
+
+    const params = {
+      TableName: 'users',
+      Item: {
+        'id': { S: id },
+        'genres': { L: genreParams }
+      }
+    }
+
+    ddb.putItem(params, (err, data) => {
+      if (err) {
+        console.log("Error", err)
+        res.status(400).send("User was not registered successfully.")
+      } else {
+        console.log("Success", data)
+        res.status(200).send("User has been registered.")
+      }
+    })
+  } else {
+    res.status(400).send({ "error": "Error in request body. Please ensure you have the id and genres attribute." })
   }
 })
 
