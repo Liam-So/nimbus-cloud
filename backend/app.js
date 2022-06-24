@@ -22,14 +22,19 @@ app.get('/users', (req, res) => {
         'id': { S: req.body.id }
       },
     }
-    ddb.getItem(params, function (err, data) {
+    ddb.getItem(params, function (err, user) {
       if (err) {
         console.log("Error", err);
       } else {
-        console.log("Success", data.Item);
-        res.status(200).send(data.Item)
+        if (user.Item) {
+          res.status(200).send(user.Item)
+        } else {
+          res.status(400).send({ "error": "No user found with provided id." })
+        }
       }
     });
+  } else {
+    res.status(400).send({ "error": "Error in request body. Please ensure you have the id attribute." })
   }
 })
 
