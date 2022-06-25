@@ -3,18 +3,22 @@ AWS.config.update({ region: 'us-east-1' })
 const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' })
 
 const getUser = (req, res) => {
-  if (req.body?.id) {
+  const { id } = req.body
+
+  if (id) {
     const params = {
       TableName: 'users',
-      Key: { 'id': { S: req.body.id } },
+      Key: { 'id': { S: id } },
     }
     ddb.getItem(params, (err, user) => {
       if (err) {
         console.log("Error", err)
       } else {
         if (user.Item) {
+          console.log("User found")
           res.status(200).send(user.Item)
         } else {
+          console.log("No user found")
           res.status(400).send({ "error": "No user found with provided id." })
         }
       }
@@ -25,8 +29,7 @@ const getUser = (req, res) => {
 }
 
 const postUser = (req, res) => {
-  const id = req.body?.id
-  const genres = req.body?.genres
+  const { id, genres } = req.body
 
   // genres have to be validated on frontend
   if (id && genres) {
