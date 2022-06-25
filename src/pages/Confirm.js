@@ -1,36 +1,36 @@
-import React from 'react'
-import { CognitoUser } from "amazon-cognito-identity-js"
-import { useLocation, useNavigate } from "react-router-dom"
-import UserPool from '../UserPool'
+import React from 'react';
+import { CognitoUser } from 'amazon-cognito-identity-js';
+import { useLocation, useNavigate } from 'react-router-dom';
+import UserPool from '../UserPool';
 
 const Confirm = () => {
   // grab our state from register
-  const { state } = useLocation()
-  const nav = useNavigate()
+  const { state } = useLocation();
+  const nav = useNavigate();
 
-  const [code, setCode] = React.useState(null)
+  const [code, setCode] = React.useState(null);
 
   const onSubmit = () => {
     if (state) {
-      const { username } = state
+      const { username } = state;
       const userData = {
         Username: username,
-        Pool: UserPool
-      }
+        Pool: UserPool,
+      };
 
-      const cognitoUser = new CognitoUser(userData)
+      const cognitoUser = new CognitoUser(userData);
       cognitoUser.confirmRegistration(code, true, (err, result) => {
         if (err) {
-          console.error(err)
+          console.error(err);
         } else {
-          console.log(result)
-          nav("/")
+          console.log(result);
+          nav('/');
         }
-      })
+      });
     } else {
-      alert("Your account cannot be verified right now. Please try again.")
+      alert('Your account cannot be verified right now. Please try again.');
     }
-  }
+  };
 
   return (
     <div>
@@ -40,11 +40,11 @@ const Confirm = () => {
             <h2 className="text-2xl font-semibold text-gray-900 text-center">
               Confirm
             </h2>
-            <div
-              className="mt-6"
-            >
+            <div className="mt-6">
               <div className="my-2">
-                <label className="text-gray-800">Enter your verification code</label>
+                <label className="text-gray-800">
+                  Enter your verification code
+                </label>
                 <input
                   type="number"
                   name="code"
@@ -56,7 +56,10 @@ const Confirm = () => {
               </div>
               <div className="my-2">
                 <div className="my-3">
-                  <button className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700" onClick={onSubmit}>
+                  <button
+                    className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700"
+                    onClick={onSubmit}
+                  >
                     Confirm
                   </button>
                 </div>
@@ -64,9 +67,9 @@ const Confirm = () => {
             </div>
           </div>
         </div>
-      </div >
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Confirm
+export default Confirm;
