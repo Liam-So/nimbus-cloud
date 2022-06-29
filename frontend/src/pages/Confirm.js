@@ -1,12 +1,14 @@
 import React from 'react';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { AccountContext } from '../context/Account';
 import UserPool from '../UserPool';
 
 const Confirm = () => {
   // grab our state from register
   const { state } = useLocation();
   const nav = useNavigate();
+  const [id, setId] = React.useContext(AccountContext);
 
   const [code, setCode] = React.useState(null);
 
@@ -22,9 +24,10 @@ const Confirm = () => {
       cognitoUser.confirmRegistration(code, true, (err, result) => {
         if (err) {
           console.error(err);
+          console.log(id);
         } else {
           console.log(result);
-          nav('/');
+          nav('/genre');
         }
       });
     } else {

@@ -46,8 +46,13 @@ const Account = ({ children }) => {
     }
   };
 
+  const user = () => {
+    const user = Pool.getCurrentUser();
+    console.log(user);
+  };
+
   return (
-    <AccountContext.Provider value={{ authenticate, logout }}>
+    <AccountContext.Provider value={{ authenticate, logout, user }}>
       {children}
     </AccountContext.Provider>
   );
