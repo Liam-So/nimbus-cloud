@@ -4,7 +4,6 @@ require('dotenv').config()
 const client_id = process.env.CLIENT_ID
 const client_secret = process.env.CLIENT_SECRET
 
-
 const authenticateApp = (req, res) => {
   const authOptions = {
     url: process.env.SPOTIFY_API_URL,
@@ -23,7 +22,6 @@ const authenticateApp = (req, res) => {
     }
   });
 }
-
 
 module.exports = {
   authenticateApp
