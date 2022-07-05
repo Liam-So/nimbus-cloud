@@ -6,7 +6,7 @@ require('dotenv').config()
 const client_id = process.env.CLIENT_ID
 const client_secret = process.env.CLIENT_SECRET
 
-const authenticateApp = async (req, res) => {
+const getRecommendations = async (req, res) => {
   const headers = {
     headers: {
       Accept: 'application/json',
@@ -21,18 +21,39 @@ const authenticateApp = async (req, res) => {
   const data = { grant_type: 'client_credentials' }
 
   try {
-    const response = await axios.post(
+    const tokenResponse = await axios.post(
       process.env.SPOTIFY_API_URL,
       qs.stringify(data),
       headers
     )
-    res.status(200).send(response.data)
+
+    // do we need refresh?
+    const accessToken = tokenResponse.data.access_token,
+      refreshToken = tokenResponse.data.refresh_token
+
+    try {
+      const genreResponse = await axios
+        .get(
+          process.env.SPOTIFY_REC_URL, {
+          params: { limit: 50, seed_genres: 'classical' },
+          headers: {
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + accessToken,
+            'Content-Type': 'application/json',
+          },
+        })
+
+      res.send(genreResponse.data)
+    } catch (error) {
+      console.log(error)
+      res.send(error)
+    }
   } catch (error) {
-    console.log(error);
-    res.status(400).send("Error")
+    console.log(error)
+    res.send(error)
   }
 }
 
 module.exports = {
-  authenticateApp
+  getRecommendations
 }
