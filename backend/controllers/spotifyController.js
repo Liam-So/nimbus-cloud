@@ -1,26 +1,36 @@
-const request = require('request'); // "Request" library
+const axios = require('axios')
+const qs = require('qs')
+
 require('dotenv').config()
 
 const client_id = process.env.CLIENT_ID
 const client_secret = process.env.CLIENT_SECRET
 
-const authenticateApp = (req, res) => {
-  const authOptions = {
-    url: process.env.SPOTIFY_API_URL,
+const authenticateApp = async (req, res) => {
+  const headers = {
     headers: {
-      'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64'))
+      Accept: 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-    form: {
-      grant_type: 'client_credentials'
+    auth: {
+      username: client_id,
+      password: client_secret,
     },
-    json: true
-  };
+  }
 
-  request.post(authOptions, (error, response, body) => {
-    if (!error && response.statusCode === 200) {
-      res.status(200).send(body)
-    }
-  });
+  const data = { grant_type: 'client_credentials' }
+
+  try {
+    const response = await axios.post(
+      process.env.SPOTIFY_API_URL,
+      qs.stringify(data),
+      headers
+    )
+    res.status(200).send(response.data)
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Error")
+  }
 }
 
 module.exports = {
