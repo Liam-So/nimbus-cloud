@@ -1,12 +1,12 @@
 import axios from '../axios';
 
 class UserDataService {
-  getUser() {
-    return axios.get('/');
+  getUser(id) {
+    return axios.get(`/users/${id}`);
   }
 
   postUser(data) {
-    return axios.post('/', data);
+    return axios.post('/users', data);
   }
 }
 

@@ -7,14 +7,14 @@ import UserPool from '../UserPool';
 const Confirm = () => {
   // grab our state from register
   const { state } = useLocation();
+  const { authenticate, user } = React.useContext(AccountContext);
   const nav = useNavigate();
-  const [id, setId] = React.useContext(AccountContext);
 
   const [code, setCode] = React.useState(null);
 
   const onSubmit = () => {
     if (state) {
-      const { username } = state;
+      const { username, password } = state;
       const userData = {
         Username: username,
         Pool: UserPool,
@@ -24,9 +24,14 @@ const Confirm = () => {
       cognitoUser.confirmRegistration(code, true, (err, result) => {
         if (err) {
           console.error(err);
-          console.log(id);
         } else {
-          console.log(result);
+          authenticate(username, password)
+            .then((data) => {
+              console.log('authenticated!', data);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
           nav('/genre');
         }
       });

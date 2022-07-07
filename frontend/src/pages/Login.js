@@ -1,21 +1,26 @@
-import * as React from 'react'
-import { Link } from "react-router-dom"
-import { AccountContext } from '../context/Account'
+import * as React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AccountContext } from '../context/Account';
 
 const Login = () => {
-  const [email, setEmail] = React.useState("")
-  const [password, setPassword] = React.useState("")
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
-  const { authenticate } = React.useContext(AccountContext)
+  const { authenticate } = React.useContext(AccountContext);
+
+  const nav = useNavigate();
 
   const onSubmit = (e) => {
-    e.preventDefault()
-    authenticate(email, password).then(data => {
-      console.log("Logged in!", data)
-    }).catch(err => {
-      console.error(err)
-    })
-  }
+    e.preventDefault();
+    authenticate(email, password)
+      .then((data) => {
+        console.log('Logged in!', data);
+        nav('/home', { state: { token: data.accessToken.jwtToken } });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   return (
     <div className="flex min-h-screen items-center bg-gray-50">
@@ -24,9 +29,7 @@ const Login = () => {
           <h2 className="text-2xl font-semibold text-gray-900 text-center">
             Login
           </h2>
-          <div
-            className="mt-6"
-          >
+          <div className="mt-6">
             <div className="my-2">
               <label className="text-gray-800">Email</label>
               <input
@@ -48,9 +51,17 @@ const Login = () => {
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <label className="text-gray-800">Don't have an account? Register <Link to="/register" className='font-bold hover:text-green-500'>here</Link></label>
+              <label className="text-gray-800">
+                Don't have an account? Register{' '}
+                <Link to="/register" className="font-bold hover:text-green-500">
+                  here
+                </Link>
+              </label>
               <div className="my-3">
-                <button className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700" onClick={onSubmit}>
+                <button
+                  className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700"
+                  onClick={onSubmit}
+                >
                   Login
                 </button>
               </div>
@@ -58,8 +69,8 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </div >
-  )
-}
+    </div>
+  );
+};
 
-export default Login
+export default Login;

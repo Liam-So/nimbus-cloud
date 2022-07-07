@@ -1,37 +1,28 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { AccountContext } from '../context/Account';
+import { genres } from '../services/genres';
+import { useNavigate } from 'react-router-dom';
+import UserPool from '../UserPool';
 import UserDataService from '../services/user.services';
 
 const Genre = () => {
-  const genres = [
-    'r&b',
-    'hip-hop',
-    'jazz',
-    'pop',
-    'disco',
-    'funk',
-    'soul',
-    'classical',
-  ];
   const [selectedGenres, setSelectedGenres] = React.useState([]);
-  const [id, setId] = React.useContext(AccountContext);
 
   const nav = useNavigate();
-  const { state } = useLocation();
 
   const onSubmit = async () => {
-    if (state) {
-      let data = {
-        id: id,
-        genres: selectedGenres,
-      };
+    let id = UserPool.getCurrentUser().username;
 
-      let response = await UserDataService.postUser(data);
-      console.log(response);
-      let result = await response.json();
-      console.log(result);
-      console.log(result.status);
+    let data = {
+      id: id,
+      genres: selectedGenres,
+    };
+
+    let response = await UserDataService.postUser(data);
+    console.log(response);
+    if (response.status === 200) {
+      nav('/');
+    } else {
+      alert('An error occurred while submitting selected genres.');
     }
   };
 
@@ -51,7 +42,6 @@ const Genre = () => {
                   className="bg-yellow-200 px-1 mt-2 rounded text-yellow-700 hover:bg-yellow-500 cursor-pointer"
                   onClick={() => {
                     setSelectedGenres([...selectedGenres, genre]);
-                    console.log(selectedGenres);
                   }}
                 >
                   {genre}

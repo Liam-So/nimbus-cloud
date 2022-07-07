@@ -22,7 +22,7 @@ const Register = () => {
   const [number, setNumber] = React.useState();
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
-  const [id, setId] = React.useContext(AccountContext);
+  const { authenticate } = React.useContext(AccountContext);
 
   const nav = useNavigate();
 
@@ -45,12 +45,9 @@ const Register = () => {
         if (err) {
           console.error(err);
         } else {
-          // TODO: link dynamoDB and upload the user's genre's and info
           console.log(data);
-          console.log(data.userSub);
-          // setId(data.userSub);
-          // send our username to the confirm page
-          nav('/confirm', { state: { username: email } });
+          // TODO - this might not be the best way to do it (sending password like this??)
+          nav('/confirm', { state: { username: email, password: password } });
         }
       });
     }
@@ -109,23 +106,7 @@ const Register = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
-            <label className="text-gray-800">Select genres</label>
-            <div className="my-2 flex flex-wrap gap-x-4">
-              {genres.map((genre, key) => {
-                return (
-                  <div
-                    key={key}
-                    className="bg-yellow-200 px-1 mt-2 rounded text-yellow-700 hover:bg-yellow-500 cursor-pointer"
-                    onClick={() => {
-                      setSelectedGenres([...selectedGenres, genre]);
-                      console.log(selectedGenres);
-                    }}
-                  >
-                    {genre}
-                  </div>
-                );
-              })}
-            </div>
+
             <div className="my-3">
               <button
                 className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700"
