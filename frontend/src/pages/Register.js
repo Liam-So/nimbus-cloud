@@ -4,25 +4,12 @@ import UserPool from '../UserPool';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import 'react-phone-number-input/style.css';
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
-import { AccountContext } from '../context/Account';
 
 const Register = () => {
-  const genres = [
-    'r&b',
-    'hip-hop',
-    'jazz',
-    'pop',
-    'disco',
-    'funk',
-    'soul',
-    'classical',
-  ];
-  const [selectedGenres, setSelectedGenres] = React.useState([]);
   const [email, setEmail] = React.useState('');
   const [number, setNumber] = React.useState();
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
-  const { authenticate } = React.useContext(AccountContext);
 
   const nav = useNavigate();
 
