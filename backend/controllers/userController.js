@@ -1,60 +1,26 @@
-const AWS = require('aws-sdk')
-AWS.config.update({ region: 'us-east-1' })
-const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' })
+const { getUserService, postUserService } = require('../services/users')
 
-const getUser = (req, res) => {
+const getUser = async (req, res) => {
   const { id } = req.body
-
-  if (id) {
-    const params = {
-      TableName: 'users',
-      Key: { 'id': { S: id } },
+  try {
+    const user = await getUserService(id)
+    if (user.Item) {
+      res.send(user.Item)
+    } else {
+      res.send({ "Error:": "No user found" })
     }
-    ddb.getItem(params, (err, user) => {
-      if (err) {
-        console.log("Error", err)
-      } else {
-        if (user.Item) {
-          console.log("User found")
-          res.status(200).send(user.Item)
-        } else {
-          console.log("No user found")
-          res.status(400).send({ "error": "No user found with provided id." })
-        }
-      }
-    });
-  } else {
-    res.status(400).send({ "error": "Error in request body. Please ensure you have the id attribute." })
+  } catch (err) {
+    res.send({ "Error": "Something went wrong" })
   }
 }
 
-const postUser = (req, res) => {
+const postUser = async (req, res) => {
   const { id, genres } = req.body
-
-  // genres have to be validated on frontend
-  if (id && genres) {
-    // add data type for each genre
-    const genreParams = genres.map(genre => ({ "S": genre }))
-
-    const params = {
-      TableName: 'users',
-      Item: {
-        'id': { S: id },
-        'genres': { L: genreParams }
-      }
-    }
-
-    ddb.putItem(params, (err, data) => {
-      if (err) {
-        console.log("Error", err)
-        res.status(400).send("User was not registered successfully.")
-      } else {
-        console.log("Success", data)
-        res.status(200).send("User has been registered.")
-      }
-    })
-  } else {
-    res.status(400).send({ "error": "Error in request body. Please ensure you have the id and genres attribute." })
+  try {
+    const user = await postUserService(id, genres)
+    res.send({ "Status": "User was successfully sent", "meta": user })
+  } catch (err) {
+    res.send({ "Error": "Something went wrong" })
   }
 }
 
