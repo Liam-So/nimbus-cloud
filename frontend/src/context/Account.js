@@ -24,7 +24,6 @@ const Account = ({ children }) => {
         onSuccess: (data) => {
           console.log('onSuccess:', data);
           resolve(data);
-          nav('/home', { state: { token: data.accessToken.jwtToken } });
         },
         onFailure: (err) => {
           console.error('onFailure:', err);
@@ -46,8 +45,13 @@ const Account = ({ children }) => {
     }
   };
 
+  const user = () => {
+    const user = Pool.getCurrentUser();
+    return user;
+  };
+
   return (
-    <AccountContext.Provider value={{ authenticate, logout }}>
+    <AccountContext.Provider value={{ authenticate, logout, user }}>
       {children}
     </AccountContext.Provider>
   );

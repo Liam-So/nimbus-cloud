@@ -1,18 +1,20 @@
 import React from 'react';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { AccountContext } from '../context/Account';
 import UserPool from '../UserPool';
 
 const Confirm = () => {
   // grab our state from register
   const { state } = useLocation();
+  const { authenticate, user } = React.useContext(AccountContext);
   const nav = useNavigate();
 
   const [code, setCode] = React.useState(null);
 
   const onSubmit = () => {
     if (state) {
-      const { username } = state;
+      const { username, password } = state;
       const userData = {
         Username: username,
         Pool: UserPool,
@@ -23,8 +25,14 @@ const Confirm = () => {
         if (err) {
           console.error(err);
         } else {
-          console.log(result);
-          nav('/');
+          authenticate(username, password)
+            .then((data) => {
+              console.log('authenticated!', data);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+          nav('/genre');
         }
       });
     } else {

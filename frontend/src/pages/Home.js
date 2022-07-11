@@ -1,10 +1,18 @@
 import * as React from 'react';
+import UserDataService from '../services/user.services';
 import { AccountContext } from '../context/Account';
 import { useLocation, Link } from 'react-router-dom';
 
 const Home = () => {
-  const { logout } = React.useContext(AccountContext);
+  const { logout, user } = React.useContext(AccountContext);
   const location = useLocation();
+
+  let id = user().username;
+
+  async function fetchData() {
+    const req = await UserDataService.getUser(id);
+    console.log(req.data);
+  }
 
   function isLoggedIn() {
     try {
@@ -35,6 +43,12 @@ const Home = () => {
               onClick={logout}
             >
               <span className="font-semibold">Logout</span>
+            </button>
+            <button
+              className="px-2 py-1 bg-yellow-200 rounded cursor-pointer hover:bg-yellow-400"
+              onClick={fetchData}
+            >
+              <span className="font-semibold">user info</span>
             </button>
           </div>
         ) : (
