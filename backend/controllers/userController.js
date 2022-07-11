@@ -1,7 +1,7 @@
 const { getUserService, postUserService } = require('../services/users')
 
 const getUser = async (req, res) => {
-  const { id } = req.body
+  const id = req.params.id;
   try {
     const user = await getUserService(id)
     if (user.Item) {
@@ -12,7 +12,7 @@ const getUser = async (req, res) => {
   } catch (err) {
     res.send({ "Error": "Something went wrong" })
   }
-}
+};
 
 const postUser = async (req, res) => {
   const { id, genres } = req.body
@@ -22,9 +22,9 @@ const postUser = async (req, res) => {
   } catch (err) {
     res.send({ "Error": "Something went wrong" })
   }
-}
+};
 
 module.exports = {
   getUser,
-  postUser
-}
+  postUser,
+};

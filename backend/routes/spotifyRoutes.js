@@ -1,8 +1,8 @@
-const express = require('express')
-const router = express.Router()
-const spotifyController = require("../controllers/spotifyController")
+const express = require('express');
+const router = express.Router();
+const spotifyController = require('../controllers/spotifyController');
 
 // get a specific genre
-router.get('/', spotifyController.getRecommendations)
+router.get('/:id', spotifyController.getRecommendations);
 
-module.exports = router
+module.exports = router;
