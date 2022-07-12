@@ -10,6 +10,15 @@ const getUserService = async (id) => {
   return await ddb.getItem(params).promise();
 };
 
+
+const getAllUserService = async () => {
+  const params = {
+    TableName: 'users',
+  };
+  return await ddb.scan(params).promise();
+};
+
+
 const postUserService = async (id, genres) => {
   const genreParams = genres.map((genre) => ({ S: genre }));
   const params = {
@@ -26,4 +35,5 @@ const postUserService = async (id, genres) => {
 module.exports = {
   getUserService,
   postUserService,
+  getAllUserService
 };

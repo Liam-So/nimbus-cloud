@@ -1,5 +1,5 @@
 const { generateSongOfDay } = require('../services/spotify');
-const { getUserService } = require('../services/users');
+const { getUserService, getAllUserService } = require('../services/users');
 
 // params includes userID
 const getRecommendations = async (req, res) => {
@@ -24,6 +24,34 @@ const getRecommendations = async (req, res) => {
   }
 };
 
+
+// upload new song for all users
+const postSongAllUsers = async (req, res) => {
+  try {
+    const users = await getAllUserService();
+    // gets each genre into an array of strings
+    const userGenres = users.Items.map(user => user.genres.L.map(genre => genre.S).toString())
+    const newMusicForAllUsers = []
+
+    for (const genre of userGenres) {
+      const generatedSong = await generateSongOfDay(genre)
+      const songData = {
+        "url": generatedSong[0].external_urls.spotify,
+        "song_name": generatedSong[0].name,
+        "img": generatedSong[0].album.images[1],
+        "artists": generatedSong[0].artists.map(artist => artist.name)
+      }
+      newMusicForAllUsers.push(songData)
+    }
+
+    res.send(newMusicForAllUsers)
+  } catch (err) {
+    res.send({ "Err": err })
+  }
+}
+
+
 module.exports = {
   getRecommendations,
+  postSongAllUsers
 };
