@@ -6,6 +6,6 @@ const spotifyController = require('../controllers/spotifyController');
 router.get('/:id', spotifyController.getRecommendations);
 
 // upload new song for all users
-router.post('/', spotifyController.postSongAllUsers)
+router.post('/', spotifyController.postSongAllUsers);
 
 module.exports = router;
