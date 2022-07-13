@@ -35,7 +35,11 @@ const Register = () => {
           console.log(data);
           // TODO - this might not be the best way to do it (sending password like this??)
           nav('/confirm', {
-            state: { username: email, password: password, phone: number },
+            state: {
+              username: email,
+              password: password,
+              phone_number: number,
+            },
           });
         }
       });

@@ -15,12 +15,12 @@ const Genre = () => {
     let id = UserPool.getCurrentUser().username;
 
     if (state) {
-      const { phone } = state;
+      const { phone_number } = state;
 
       let data = {
         id: id,
         genres: selectedGenres,
-        phone_number: phone,
+        phone_number: phone_number,
       };
 
       let response = await UserDataService.postUser(data);
