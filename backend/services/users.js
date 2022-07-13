@@ -49,14 +49,14 @@ const updateUserSongOfDay = async ({ id, url, song, img, artists }) => {
   return await ddb.updateItem(params).promise();
 };
 
-const postUserService = async (id, genres, phone) => {
+const postUserService = async (id, genres, phone_number) => {
   const genreParams = genres.map((genre) => ({ S: genre }));
   const params = {
     TableName: 'users',
     Item: {
       id: { S: id },
       genres: { L: genreParams },
-      phone_number: { S: phone },
+      phone_number: { S: phone_number },
     },
   };
 

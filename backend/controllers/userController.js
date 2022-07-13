@@ -15,9 +15,9 @@ const getUser = async (req, res) => {
 };
 
 const postUser = async (req, res) => {
-  const { id, genres, phone } = req.body;
+  const { id, genres, phone_number } = req.body;
   try {
-    const user = await postUserService(id, genres, phone);
+    const user = await postUserService(id, genres, phone_number);
     res.send({ Status: 'User was successfully sent', meta: user });
   } catch (err) {
     res.send({ Error: 'Something went wrong' });

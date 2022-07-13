@@ -7,6 +7,9 @@ const getNumbers = (req, res) => {
       if (err) {
         console.log(err, err.stack);
       } else {
+        Object.entries(data.PhoneNumbers).map(([key, value]) => {
+          console.log(data.PhoneNumbers[key].PhoneNumber);
+        });
         res.send({
           'Phone Numbers': data.PhoneNumbers,
         });
