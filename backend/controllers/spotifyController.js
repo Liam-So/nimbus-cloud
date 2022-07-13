@@ -1,5 +1,5 @@
 const { generateSongOfDay } = require('../services/spotify');
-const { getUserService } = require('../services/users');
+const { getUserService, getAllUserService, updateUserSongOfDay } = require('../services/users');
 
 // params includes userID
 const getRecommendations = async (req, res) => {
@@ -24,6 +24,44 @@ const getRecommendations = async (req, res) => {
   }
 };
 
+
+// upload new song for all users
+const postSongAllUsers = async (req, res) => {
+  try {
+    // get all users in dynamo
+    const users = await getAllUserService();
+    // extract ids and genres from data
+    const userIds = users.Items.map(user => user.id.S)
+    const userGenres = users.Items.map(user => user.genres.L.map(genre => genre.S).toString())
+    // store all new users from db
+    const updatedList = []
+
+    let index = 0
+    // generate a new song for each user
+    for (const genre of userGenres) {
+      const generatedSong = await generateSongOfDay(genre)
+      const songData = {
+        "id": userIds[index],
+        "url": generatedSong[0].external_urls.spotify,
+        "song": generatedSong[0].name,
+        "img": generatedSong[0].album.images[1].url,
+        "artists": generatedSong[0].artists.map(artist => artist.name)
+      }
+      // write to db 
+      const newUser = await updateUserSongOfDay(songData)
+      // add the updated user
+      updatedList.push(newUser)
+      index += 1
+    }
+
+    res.send(updatedList)
+  } catch (err) {
+    res.send({ "Err": err })
+  }
+}
+
+
 module.exports = {
   getRecommendations,
+  postSongAllUsers
 };
