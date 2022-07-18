@@ -1,14 +1,13 @@
 const AWS = require('aws-sdk');
 AWS.config.update({ region: 'us-east-1' });
-const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
-
+const ddb = new AWS.DynamoDB.DocumentClient();
 
 const getUserService = async (id) => {
   const params = {
     TableName: 'users',
-    Key: { id: { S: id } },
+    Key: { id: id }
   };
-  return await ddb.getItem(params).promise();
+  return await ddb.get(params).promise();
 };
 
 
@@ -21,49 +20,38 @@ const getAllUserService = async () => {
 
 
 const updateUserSongOfDay = async ({ id, url, song, img, artists }) => {
-  const artistParams = artists.map((artist) => ({ S: artist }));
   const params = {
-    ExpressionAttributeNames: {
-      "#SURL": "song_url",
-      "#SN": "song_name",
-      "#IG": "song_img",
-      "#A": "artists"
-    },
+    TableName: 'users',
+    Key: { id: id },
+    UpdateExpression: "SET #s = list_append(#s, :songs)",
+    ExpressionAttributeNames: { "#s": "songs" },
     ExpressionAttributeValues: {
-      ":u": {
-        S: url
-      },
-      ":n": {
-        S: song
-      },
-      ":i": {
-        S: img
-      },
-      ":a": {
-        L: artistParams
-      }
+      ":songs": [{
+        url: url,
+        song: song,
+        img: img,
+        artists: artists
+      }]
     },
-    Key: { id: { S: id } },
-    ReturnValues: "ALL_NEW",
-    TableName: "users",
-    UpdateExpression: "SET #SURL = :u, #SN = :n, #IG = :i, #A = :a"
-  };
+    ReturnValues: "UPDATED_NEW"
+  }
 
-  return await ddb.updateItem(params).promise()
-}
+  return await ddb.update(params).promise();
+};
 
 
-const postUserService = async (id, genres) => {
-  const genreParams = genres.map((genre) => ({ S: genre }));
+const postUserService = async (id, genres, phone_number) => {
   const params = {
     TableName: 'users',
     Item: {
-      id: { S: id },
-      genres: { L: genreParams },
+      id: id,
+      genres: genres,
+      phone_number: phone_number,
+      songs: []
     },
   };
 
-  return await ddb.putItem(params).promise();
+  return await ddb.put(params).promise();
 };
 
 
@@ -71,5 +59,5 @@ module.exports = {
   getUserService,
   postUserService,
   getAllUserService,
-  updateUserSongOfDay
+  updateUserSongOfDay,
 };

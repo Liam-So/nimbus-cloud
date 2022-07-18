@@ -14,7 +14,7 @@ const Confirm = () => {
 
   const onSubmit = () => {
     if (state) {
-      const { username, password } = state;
+      const { username, password, phone_number } = state;
       const userData = {
         Username: username,
         Pool: UserPool,
@@ -32,7 +32,7 @@ const Confirm = () => {
             .catch((err) => {
               console.error(err);
             });
-          nav('/genre');
+          nav('/genre', { state: { phone_number: phone_number } });
         }
       });
     } else {

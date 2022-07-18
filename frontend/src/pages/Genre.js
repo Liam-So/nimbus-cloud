@@ -1,6 +1,6 @@
 import React from 'react';
 import { genres } from '../services/genres';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import UserPool from '../UserPool';
 import UserDataService from '../services/user.services';
 
@@ -9,20 +9,27 @@ const Genre = () => {
 
   const nav = useNavigate();
 
+  const { state } = useLocation();
+
   const onSubmit = async () => {
     let id = UserPool.getCurrentUser().username;
 
-    let data = {
-      id: id,
-      genres: selectedGenres,
-    };
+    if (state) {
+      const { phone_number } = state;
 
-    let response = await UserDataService.postUser(data);
-    console.log(response);
-    if (response.status === 200) {
-      nav('/');
-    } else {
-      alert('An error occurred while submitting selected genres.');
+      let data = {
+        id: id,
+        genres: selectedGenres,
+        phone_number: phone_number,
+      };
+
+      let response = await UserDataService.postUser(data);
+      console.log(response);
+      if (response.status === 200) {
+        nav('/');
+      } else {
+        alert('An error occurred while submitting selected genres.');
+      }
     }
   };
 
