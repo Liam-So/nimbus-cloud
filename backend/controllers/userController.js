@@ -10,7 +10,7 @@ const getUser = async (req, res) => {
       res.send({ 'Error:': 'No user found' });
     }
   } catch (err) {
-    res.send({ Error: 'Something went wrong' });
+    res.send({ Error: err });
   }
 };
 
@@ -20,7 +20,7 @@ const postUser = async (req, res) => {
     const user = await postUserService(id, genres, phone_number);
     res.send({ Status: 'User was successfully sent', meta: user });
   } catch (err) {
-    res.send({ Error: 'Something went wrong' });
+    res.send({ Error: err });
   }
 };
 

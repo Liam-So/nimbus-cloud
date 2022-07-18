@@ -41,13 +41,13 @@ const postSongAllUsers = async (req, res) => {
 
     // for each user in users, update the song of the day
     for (const user of users) {
-      const user_genres = user.genres.L.map(genre => genre.S).toString();
+      const user_genres = user.genres.toString();
       const generatedSong = await generateSongOfDay(user_genres)
       // since our endpoint only gets 1 song we can get the first element
       const song = generatedSong[0]
       const artists = song.artists.map((artist) => artist.name)
       const songData = {
-        id: user.id.S,
+        id: user.id,
         url: song.external_urls.spotify,
         song: song.name,
         img: song.album.images[1].url,
@@ -57,7 +57,7 @@ const postSongAllUsers = async (req, res) => {
       const updatedUser = await updateUserSongOfDay(songData);
 
       // send sms
-      const phone_number = user.phone_number.S
+      const phone_number = user.phone_number
 
       // only send to numbers that have been validated (only for sandbox)
       if (filteredNumbers.includes(phone_number)) {
