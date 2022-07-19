@@ -5,7 +5,7 @@ import UserPool from '../UserPool';
 import UserDataService from '../services/user.services';
 
 const Genre = () => {
-  const [selectedGenres, setSelectedGenres] = React.useState([]);
+  const [selectedGenres, setSelectedGenres] = React.useState(new Set());
 
   const nav = useNavigate();
 
@@ -19,7 +19,7 @@ const Genre = () => {
 
       let data = {
         id: id,
-        genres: selectedGenres,
+        genres: [...selectedGenres],
         phone_number: phone_number,
       };
 
@@ -35,7 +35,7 @@ const Genre = () => {
 
   return (
     <div className="flex min-h-screen items-center bg-gray-50">
-      <div className="bg-white lg:w-4/12 md:6/12 w-10/12 m-auto shadow-md">
+      <div className="bg-white w-8/12 m-auto shadow-md">
         <div className="py-8 px-8 rounded-xl">
           <h2 className="text-2xl font-semibold text-gray-900 text-center">
             Select Your Genres
@@ -48,7 +48,7 @@ const Genre = () => {
                   key={key}
                   className="bg-yellow-200 px-1 mt-2 rounded text-yellow-700 hover:bg-yellow-500 cursor-pointer"
                   onClick={() => {
-                    setSelectedGenres([...selectedGenres, genre]);
+                    setSelectedGenres(new Set([...selectedGenres, genre]));
                   }}
                 >
                   {genre}
@@ -57,6 +57,7 @@ const Genre = () => {
             })}
           </div>
           <div className="my-3">
+            <h1>Selected Genres: {[...selectedGenres].join(', ')}</h1>
             <button
               className="w-full text-center bg-indigo-500 py-3 text-white rounded-sm hover:bg-indigo-700"
               onClick={onSubmit}
