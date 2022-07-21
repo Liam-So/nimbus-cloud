@@ -14,7 +14,6 @@ const Login = () => {
     e.preventDefault();
     authenticate(email, password)
       .then((data) => {
-        console.log('Logged in!', data);
         nav('/home', { state: { token: data.accessToken.jwtToken } });
       })
       .catch((err) => {

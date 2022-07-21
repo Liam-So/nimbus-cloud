@@ -7,7 +7,7 @@ import UserPool from '../UserPool';
 const Confirm = () => {
   // grab our state from register
   const { state } = useLocation();
-  const { authenticate, user } = React.useContext(AccountContext);
+  const { authenticate } = React.useContext(AccountContext);
   const nav = useNavigate();
 
   const [code, setCode] = React.useState(null);

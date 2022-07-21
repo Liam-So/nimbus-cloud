@@ -24,7 +24,6 @@ const Genre = () => {
       };
 
       let response = await UserDataService.postUser(data);
-      console.log(response);
       if (response.status === 200) {
         nav('/');
       } else {

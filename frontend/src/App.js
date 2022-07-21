@@ -4,7 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Genre from './pages/Genre';
-import { Account, AccountContext } from './context/Account';
+import { Account } from './context/Account';
 import Confirm from './pages/Confirm';
 
 function App() {

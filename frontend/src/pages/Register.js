@@ -32,7 +32,6 @@ const Register = () => {
         if (err) {
           console.error(err);
         } else {
-          console.log(data);
           // TODO - this might not be the best way to do it (sending password like this??)
           nav('/confirm', {
             state: {

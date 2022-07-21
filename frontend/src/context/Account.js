@@ -30,7 +30,6 @@ const Account = ({ children }) => {
           reject(err);
         },
         newPasswordRequired: (data) => {
-          console.log('newPasswordRequired:', data);
           resolve(data);
         },
       });
