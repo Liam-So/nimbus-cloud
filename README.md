@@ -8,9 +8,8 @@ Note- Due to the provision service charges on AWS, the application is non-functi
 
 1. [Steps for Local Deployment](#local_deployment)
 2. [Architecture](#architecture)
-3. [What it Does](#purpose)
-4. [Built With](#built_with)
-5. [Screenshots](#screenshots)
+3. [Built With](#built_with)
+4. [Screenshots](#screenshots)
 
 
 <a name="local_deployment">
