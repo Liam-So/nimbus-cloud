@@ -1,4 +1,4 @@
-## Nimbus Cloud
+## Nimbus Songs
 
 Fullstack application that leverages AWS services, and the Spotify API to send a text message with a "Song of the day" based on the seed genres the user selected upon registration.
 
