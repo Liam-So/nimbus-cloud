@@ -37,11 +37,12 @@ Note- Due to the provision service charges on AWS, the application is non-functi
 
 ## How it was built and provisioned on AWS
 
-Nimbus Cloud was built using Docker, React, Express, Node.js, DynamoDB, Amazon Cognito, AWS Lambda, Elastic Beanstalk, Amazon SNS, Cloudfront, and API Gateway. 
+Nimbus Cloud was built using Docker, React, Express, Node.js, S3, DynamoDB, Amazon Cognito, AWS Lambda, Elastic Beanstalk, Amazon SNS, Cloudfront, and API Gateway. 
 
 The architecture uses Cloudfront to route user requests to our frontend and provides an extra layer of security in doing so. Our frontend is a React application hosted on S3 which uses Amazon Cognito for user authentication and serves requests to our backend. These requests go through API Gateway for security, which acts as a proxy for our Elastic Beanstalk application. 
 
-The Nodejs and Expressjs backend is deployed on Elastic Beanstalk where it interacts with our DynamoDB database. This is also where our Lambda function is called to generate the daily song recommendations from Spotify, and uses SNS to send the generated song to the user’s mobile device. 
+The Nodejs and Expressjs backend is deployed on Elastic Beanstalk where it interacts with our DynamoDB database. Our Lambda function is executed everyday at 12pm AT time using a cron expression that calls an endpoint in our EBS application. This generates the daily song recommendations from Spotify, and uses SNS to send the generated song to the user’s mobile device. 
+  
 Our data is stored through the use of two AWS cloud services. Passwords are not directly stored, but our application uses Amazon Cognito to provide user pools of scalable storage used for user authentication during registration and login. The rest of our data is stored in a DynamoDB database.
 
 Our frontend user interface required programming to create our various pages: register, genres, confirmation, login, and home. Our backend also required programming to create and connect our endpoints to spotify and our AWS services: SNS and DynamoDB. It also allowed our users to see their previous songs of the day for their convenience.
