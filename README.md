@@ -54,3 +54,19 @@ Our deployment uses Docker to containerize and push our application’s backend 
 <a name="screenshots">
 
 ## Screenshots
+Sample messages generated from our lambda function. They provide the song, artist, and link to the spotify url.
+<img width="1174" alt="image" src="https://user-images.githubusercontent.com/60020795/189744639-79d0a52f-b2d9-4016-b963-ae35c45195ca.png">
+Login Form
+<img width="1438" alt="image" src="https://user-images.githubusercontent.com/60020795/189744217-a20ec1da-6a87-4488-b5dd-66ce75a988f7.png">
+Register Form
+<img width="1437" alt="image" src="https://user-images.githubusercontent.com/60020795/189744257-d23d29c6-7ff8-4513-90e2-359cb94a0261.png">
+Confirmation Code Form
+<img width="1439" alt="image" src="https://user-images.githubusercontent.com/60020795/189744306-9affcfa2-c6e9-4fd5-9f22-9ed1848fbbf7.png">
+Genre select form
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/60020795/189744344-c5ecf376-e868-4459-8121-a98c0c97b80a.png">
+Sample Song of the day with album cover, song title, and url.
+<img width="1436" alt="image" src="https://user-images.githubusercontent.com/60020795/189744490-070eb76d-d26b-45bf-98ad-272fbc25505b.png">
+Sample homepage that keeps track of user's previous songs of the day.
+<img width="1438" alt="image" src="https://user-images.githubusercontent.com/60020795/189744536-a62831d1-e737-4763-9346-22f4ac5552ae.png">
+
+
