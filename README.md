@@ -1,6 +1,6 @@
 ## Nimbus Cloud
 
-Fullstack application that leverages AWS services, and the Spotify API to send a user a brand new song of the day based on the seed genres they selected upon registration.
+Fullstack application that leverages AWS services, and the Spotify API to send a text message with a "Song of the day" based on the seed genres the user selected upon registration.
 
 Note- Due to the provision service charges on AWS, the application is non-functional when running it locally. Instructions to run it locally will be provided nonetheless.
 
